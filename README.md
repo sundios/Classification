@@ -73,8 +73,9 @@ correspond to 200 of each class belong to both each. This way, our finalmodel is
 ### 5. Dimension Reduction - Creating functions for feature extraction 
 For dimension reduction, we use K-Means Clustering to extract a low dimensional feature representation of the data points:
 
-
+<p align="center">
 <img src="http://kburchardt.com/images/1.png" alt="equation" width="400" style="margin:0 auto 0;"/>
+</p>
 
 This is an unsupervised machine learning technique that finds similarities in the data-points and clusters them based on closeness
 (Euclidian distance) so each cluster C1, . . . , Ck represents a feature. 
