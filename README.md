@@ -2,7 +2,7 @@
 # ![alt text][logo]
 [logo]:http://www.komahats.com/Koma_logo_bear.jpg
 
-# Databases
+# Classification in python from scratch
 # Authors
 - Margaret Sant 
 - Konrad Burchardt
