@@ -75,7 +75,7 @@ This is an unsupervised machine learning technique that finds similarities in th
 First, an initiation function randomly assigns each data point in the training set to one of the k clusters. 
 The first step of the algorithm re-assigns each data-point to the closest cluster centroid. The second step recalculates the location of the centroids based on the mean of the data-points in the respective clusters. Steps one and two repeat until no reassignment takes place. This equation describes the formula for computing the mean of each cluster:
 
-<img src="http://kburchardt.com/images/2.png" alt="equation" width="200" style="margin:0 auto 0;"/>
+<img src="http://kburchardt.com/images/2.png" alt="equation" width="200" style="display: flex;margin: 0 auto"/>
 
 μj s the centroid, aka the codebook vector. The minimal distance between the data-point and centroid is thus calculated as distance αi = ∥xi − μj ∥. This is the Euclidian distance. Our K-Means algorithm employs distances as a distance vector on both the train and the test set to obtain the reduced x to our feature vector f(x) = (a1. . . , ak) which will be fed into our Linear Regression classifier. We later explain how we split xtrain into validation and training folds to evaluate the models for various numbers of k to find the optimal kopt . We will also use K-Means on xtest using kopt for feature reduction before using our final Linear Regression classifier.
 
@@ -85,7 +85,7 @@ In this stage, we are using Linear Regression as a mechanism to transform the fe
 We use the machine learning method called Linear Regression as our d decision function to find the optimal weights Wopt for our features f(xi) to create the hypothesis vector, which is an approximate our target zi, our binary encoding for the digit classes explained above.
 To start, we create a feature vector of “1”’s as a padding to deal with bias. So, f(xi) has size k+1, and Wopt is a matrix of size 10 x (1+k) . Then ,we create our linear regressor with the following equation:
 
-<img src="http://kburchardt.com/images/3.png" alt="equation" width="400" style="margin:0 auto 0;"/>
+<img src="http://kburchardt.com/images/3.png" alt="equation" width="400" style="display: flex;margin: 0 auto"/>
 
 where X is our f(x), and Y is our binary encoding zi. For our model, we set α to 0.5. And, N is the dimensions of our raw data. We fit the above equation to xtrain with f(x) and zi to create our hypothesis vector h(x), which we will use to test the (1) misclassification MISS and (2) mean squared error MSE scores of our train set using cross validation, described in the following section.
 
@@ -94,17 +94,41 @@ where X is our f(x), and Y is our binary encoding zi. For our model, we set α t
 In order to boost our model performance, we run the cross-validation scheme described above for various values of k. We do this to show whether the model is under- or overfitting. We only have xtrain available to us at this time, so we split the training data set S = (xi,yi)(i=,...,N) into two subsets, a \train” T = (xi,yi)i∈I and a “validation” V = (x′j,yi′)i∈I′.
 This way we train the model and get a training error metric, while also sim- ulating “new data” in xvalidateto get a validation (or test) error metric. We use two different error score metrics, mean-squared-error MSE and misclassification MISS to see how our model performs:
 
+<p align="center">
+  <img src="http://kburchardt.com/images/4.png" alt="equation" width="400"/>
+</p>
 
-<img src="http://kburchardt.com/images/4.png" alt="equation" width="400" style="margin:0 auto 0;"/>
 
 where d is our linear regression decision function training on the training folds, zj our given encoded target vector, and ci is the hypothesis vectors.
 
 ### 8. Using Cross Validation to find optimal K
 We use Cross validation on various numbers of ki, and graph our MSE and MISS results. For our problem, we use 8 folds for our cross validation, results shown on the graphs below:
+
 Given k=[1,10,20,30,40,50,60,70,80,90, 100, 120, 130, 140, 150, 160, 170, 180, 190, 200, 210, 220, 230, 240]:
 
 
-<img src="http://kburchardt.com/images/5.png" alt="equation" width="400" style="float:left;"/> <img src="http://kburchardt.com/images/6.png" alt="equation" width="400" style="margin:0 auto 0;"/>
+<img src="http://kburchardt.com/images/5.png" alt="equation" width="400" style="float:left;"/><img src="http://kburchardt.com/images/6.png" alt="equation" width="400" style="display: flex;margin: 0 auto"/>
+
+The optimal number of clusters is somewhere between 80 and 110. On this range, the MSE and MISS scores begin to level-off. If you look at the MSEvalidation score on the graph to the right, between 80 and 110 clusters, the line begins to increase and move away from the MSEtrainscore. So, we decided to test our classification model using various numbers of clusters between 80 and 110.
+
+### 9. Results
+To measure the accuracy of our model, we use 1 – MISS, which gives us a percentage of correct classification. We ran K-Means for values of k in range 80 to 110 on the entire training set, and then fit our classifier and obtained the following results for the test data:
+
+<img src="http://kburchardt.com/images/7.png" alt="equation" width="400" style="display: flex;margin: 0 auto"/>
+
+
+So the best K-Means reduction technique for our linear classifier model uses 100 clusters. This means that we when we reduce our data x ∈ R240| → f(x) ∈ R100, we obtain the optimal weights for our linear classifier.
+We also wanted to see what number of clusters we would use according to the MISS and MSE results for 2-fold cross validation, as a comparison. Judging from this graph, we would choose our number of clusters from range 60 to 100. We obtained the following results on our test set for these clusters:
+
+<img src="http://kburchardt.com/images/8.png" alt="equation" width="400" style="float:left;"/><img src="http://kburchardt.com/images/9.png" alt="equation" width="400" style="margin:0 auto 0;"/>
+
+<img src="http://kburchardt.com/images/10.png" alt="equation" width="400" style="display: flex;margin: 0 auto"/>
+
+100 is also the optimal number of clusters, but it appears are the end of our range. Using 8-folds was ideal for us, because it shows that the accuracy decreases after 100 clusters.
+
+
+
+
 
 
 
