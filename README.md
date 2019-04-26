@@ -12,8 +12,14 @@
 ## Table of Contents 
 
 - [1. Introduction](#1-introduction)
-- [2. The Digits Dataset](#1-the-digits-dataset)
-- [2. The Digits Dataset](#1-the-digits-dataset)
+- [2. The Digits Dataset](#2-the-digits-dataset)
+- [3. The Objectives](#3-the-objectives)
+- [4. Data Preprocessing - Creating the train and test set](#4-data-preprocessing--creating-the-train-and-test-set)
+- [5. Dimension Reduction - Creating functions for our feature extraction](#5-dimension-reduction---creating-functions-for-feature-extraction)
+- [6. Linear Regression - Creating functions for linear regression](#6-linear-regression---creating-functions-for-linear-regression)
+- [7. Cross validation](#7-cross-validation)
+- [8. Using cross validation to find optimal k](#8-using-cross-validation-to-find-optimal-k)
+- [9. Results](#9-results)
 
 
 ### 1. Introduction
@@ -74,9 +80,9 @@ This is an unsupervised machine learning technique that finds similarities in th
 (Euclidian distance) so each cluster C1, . . . , Ck represents a feature. 
 First, an initiation function randomly assigns each data point in the training set to one of the k clusters. 
 The first step of the algorithm re-assigns each data-point to the closest cluster centroid. The second step recalculates the location of the centroids based on the mean of the data-points in the respective clusters. Steps one and two repeat until no reassignment takes place. This equation describes the formula for computing the mean of each cluster:
-
+<p align="center">
 <img src="http://kburchardt.com/images/2.png" alt="equation" width="200" style="display: flex;margin: 0 auto"/>
-
+</p>
 μj s the centroid, aka the codebook vector. The minimal distance between the data-point and centroid is thus calculated as distance αi = ∥xi − μj ∥. This is the Euclidian distance. Our K-Means algorithm employs distances as a distance vector on both the train and the test set to obtain the reduced x to our feature vector f(x) = (a1. . . , ak) which will be fed into our Linear Regression classifier. We later explain how we split xtrain into validation and training folds to evaluate the models for various numbers of k to find the optimal kopt . We will also use K-Means on xtest using kopt for feature reduction before using our final Linear Regression classifier.
 
 ### 6. Linear Regression - Creating functions for Linear Regression
@@ -84,9 +90,9 @@ In this stage, we are using Linear Regression as a mechanism to transform the fe
 
 We use the machine learning method called Linear Regression as our d decision function to find the optimal weights Wopt for our features f(xi) to create the hypothesis vector, which is an approximate our target zi, our binary encoding for the digit classes explained above.
 To start, we create a feature vector of “1”’s as a padding to deal with bias. So, f(xi) has size k+1, and Wopt is a matrix of size 10 x (1+k) . Then ,we create our linear regressor with the following equation:
-
+<p align="center">
 <img src="http://kburchardt.com/images/3.png" alt="equation" width="400" style="display: flex;margin: 0 auto"/>
-
+</p>
 where X is our f(x), and Y is our binary encoding zi. For our model, we set α to 0.5. And, N is the dimensions of our raw data. We fit the above equation to xtrain with f(x) and zi to create our hypothesis vector h(x), which we will use to test the (1) misclassification MISS and (2) mean squared error MSE scores of our train set using cross validation, described in the following section.
 
 
@@ -106,24 +112,25 @@ We use Cross validation on various numbers of ki, and graph our MSE and MISS res
 
 Given k=[1,10,20,30,40,50,60,70,80,90, 100, 120, 130, 140, 150, 160, 170, 180, 190, 200, 210, 220, 230, 240]:
 
-
+<p align="center">
 <img src="http://kburchardt.com/images/5.png" alt="equation" width="400" style="float:left;"/><img src="http://kburchardt.com/images/6.png" alt="equation" width="400" style="display: flex;margin: 0 auto"/>
-
+</p>
 The optimal number of clusters is somewhere between 80 and 110. On this range, the MSE and MISS scores begin to level-off. If you look at the MSEvalidation score on the graph to the right, between 80 and 110 clusters, the line begins to increase and move away from the MSEtrainscore. So, we decided to test our classification model using various numbers of clusters between 80 and 110.
 
 ### 9. Results
 To measure the accuracy of our model, we use 1 – MISS, which gives us a percentage of correct classification. We ran K-Means for values of k in range 80 to 110 on the entire training set, and then fit our classifier and obtained the following results for the test data:
-
-<img src="http://kburchardt.com/images/7.png" alt="equation" width="400" style="display: flex;margin: 0 auto"/>
-
+<p align="center">
+<img src="http://kburchardt.com/images/7.png" alt="equation" width="400" />
+</p>
 
 So the best K-Means reduction technique for our linear classifier model uses 100 clusters. This means that we when we reduce our data x ∈ R240| → f(x) ∈ R100, we obtain the optimal weights for our linear classifier.
 We also wanted to see what number of clusters we would use according to the MISS and MSE results for 2-fold cross validation, as a comparison. Judging from this graph, we would choose our number of clusters from range 60 to 100. We obtained the following results on our test set for these clusters:
-
+<p align="center">
 <img src="http://kburchardt.com/images/8.png" alt="equation" width="400" style="float:left;"/><img src="http://kburchardt.com/images/9.png" alt="equation" width="400" style="margin:0 auto 0;"/>
-
+<p>
+<p align="center">
 <img src="http://kburchardt.com/images/10.png" alt="equation" width="400" style="display: flex;margin: 0 auto"/>
-
+</p>
 100 is also the optimal number of clusters, but it appears are the end of our range. Using 8-folds was ideal for us, because it shows that the accuracy decreases after 100 clusters.
 
 
