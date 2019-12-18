@@ -4,8 +4,9 @@
 
 # Classification in python from scratch
 # Authors
-- Margaret Sant 
-- Konrad Burchardt
+
+* **Margaret Sant**  - [Santma](https://github.com/santma)
+* **Konrad Burchardt** - [Sundios](https://github.com/sundios)
 
 
 
